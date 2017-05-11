@@ -322,7 +322,7 @@ else{
         $temp_name = $_FILES["files"]["tmp_name"];
 
         $imgtype = $_FILES["files"]["type"];
-        $coursename = $_POST['coursename'];
+        $coursename = $_POST['coursenames'];
 
         $college_names = $_POST['college_names'];
         $course_short_name = $_POST['courseshortnames'];
@@ -357,7 +357,7 @@ else{
             $type.="Full Time";
             $typefees.=$part_fees;
             $typefees.=",";
-            $typefees.="$fullfees";
+            $typefees.=$full_fees;
             $typeduration.=$part_duration;
             $typeduration.=",";
             $typeduration.="$full_duration";
@@ -372,26 +372,29 @@ else{
                 }
             } elseif ($_POST['fulltime'] == 'yes') {
                 $type.="Full Time";
-                $typefees.=$fullfees;
+                $typefees.=$full_fees;
                 $typeduration = $full_duration;
             }
         }
-//print_r($type);exit();
+     
+
         $ext = GetImageExtension($imgtype);
 
         $imagename = date("d-m-Y") . "-" . time() . $ext;
         $target_path = "courses/" . $imagename;
 
         move_uploaded_file($temp_name, $target_path);
-        $sl = mysqli_query($bd, "INSERT INTO `course_details`(`course_id`, `college_id`, `country_id`, `course_name`, `course_details`, "
+       $q="INSERT INTO `course_details`(`course_id`, `college_id`, `country_id`, `course_name`, `course_details`, "
                 . "`course_image`, `course_fees`, `course_time`, `requirements`, `course intake`, `status`,`course_type`,`course_short_name`)"
-                . " VALUES ('','$college_names','$country','$coursename','$coursedetail','$target_path','$typefees','$typeduration','$renames','$names','1','$type','$course_short_name')");
+                . " VALUES ('','$college_names','$country','$coursename','$coursedetail','$target_path','$typefees','$typeduration','$renames','$names','1','$type','$course_short_name')";
+     
+       $sl = mysqli_query($bd, $q);
         if ($sl) {
 
             echo "<SCRIPT>window.location.href='list_courses.php'</script>";
             $_SESSION["msg"] = "Y";
         } else {
-            echo "<SCRIPT>window.location.href='list_courses.php'</script>";
+          echo "<SCRIPT>window.location.href='list_courses.php'</script>";
 
             $_SESSION["msg"] = "N";
         }

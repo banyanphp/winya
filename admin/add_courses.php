@@ -128,9 +128,9 @@ if ($_SESSION['permission'] != 1) {
                                             <div class="form-group">
                                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="country">Course Type <span class="required">*</span></label>
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                                    Part Time    <input type="checkbox" id="part_time" name="chkbox" onclick="ShowHideDiv()" value="yes"> 
+                                                    Part Time    <input type="checkbox" id="part_time" name="parttime" onclick="ShowHideDiv()" value="yes"> 
                                                     <br>
-                                                    Full Time    <input type="checkbox" id="full_time" name="chkbox"  onclick="ShowHideDivs()" value="yes"> 
+                                                    Full Time    <input type="checkbox" id="full_time" name="fulltime"  onclick="ShowHideDivs()" value="yes"> 
 
                                                 </div>
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
