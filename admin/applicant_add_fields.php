@@ -93,25 +93,27 @@ if (($_SESSION['permission'] != '1') && ($_SESSION['permission'] != '2')) {
                                     <div class="x_content">
                                         <br />
                                         <form id="add_fields" action='store.php?action=add_fields' method='post' data-parsley-validate  class="form-horizontal form-label-left">
-     <?php
-                                    if (isset($_SESSION["msg"])) {
-                                        if ($_SESSION["msg"] == "Y") {
-                                            unset($_SESSION['msg']);
+                                            <?php
+                                            if (isset($_SESSION["msg"])) {
+                                                if ($_SESSION["msg"] == "Y") {
+                                                    unset($_SESSION['msg']);
+                                                    ?>
+                                                    <div class="alert alert-success fade in m-b-15">
+                                                        <strong>Success!</strong>
+                                                        Course Added Successfully
+                                                        <span class="close" data-dismiss="alert">&times;</span>
+                                                    </div>
+                                                <?php } else if ($_SESSION["msg"] == "N") {
+                                                    unset($_SESSION['msg']);
+                                                    ?>
+                                                    <div class="alert alert-danger fade in m-b-15">
+                                                        <strong>Error!</strong>
+                                                        Error Occured 
+                                                        <span class="close" data-dismiss="alert">&times;</span>
+                                                    </div>
+                                                <?php }
+                                            }
                                             ?>
-                                            <div class="alert alert-success fade in m-b-15">
-                                                <strong>Success!</strong>
-                                                Course Added Successfully
-                                                <span class="close" data-dismiss="alert">&times;</span>
-                                            </div>
-    <?php } else if ($_SESSION["msg"] == "N") {
-        unset($_SESSION['msg']); ?>
-                                            <div class="alert alert-danger fade in m-b-15">
-                                                <strong>Error!</strong>
-                                                Error Occured 
-                                                <span class="close" data-dismiss="alert">&times;</span>
-                                            </div>
-    <?php }
-} ?>
                                             <div class="form-group">
                                                 <label for="txtProductName" class="col-sm-3 control-label">Add Fields </label>
 
@@ -124,37 +126,34 @@ if (($_SESSION['permission'] != '1') && ($_SESSION['permission'] != '2')) {
                                                         $post[] = $row['field_name'];
                                                     }
                                                     ?>  <div class="field_wrappers">
-                                                                <div>
+                                                        <div>
 
-                                                                    <button type="button" class="btn btn-primary add_button"
-                                                                            value="" ><i class="icon-plus-sign"></i>    ADD                                                 
-                                                                    </button>
+                                                            <button type="button" class="btn btn-primary add_button"
+                                                                    value="" ><i class="icon-plus-sign"></i>    ADD                                                 
+                                                            </button>
 
-                                                                </div>
-                                                            </div>
-                                                        <?php
-                                                    
+                                                        </div>
+                                                    </div>
+                                                    <?php
                                                     $count = count($post);
                                                     for ($i = 0; $i < $count; $i++) {
                                                         $data = $post[$i];
-                                                      
-?>
-                                                          
-                                                    
-                                                            <div class="field_wrapper">
-                                                                <div>
-                                                                    <input type="text" class="form-control" name="field_name[]" value="<?php echo $data ?>"  style="width: 50%;float: left;margin-right:14px;"/>
+                                                        ?>
 
-                                                                    <button type="button" class="btn btn-danger remove_button"
-                                                                            value="" ><i class="icon-plus-sign"></i>    Remove                                                 
-                                                                    </button>
 
-                                                                </div>
+                                                        <div class="field_wrapper">
+                                                            <div>
+                                                                <input type="text" class="form-control" name="field_name[]" value="<?php echo $data ?>"  style="width: 50%;float: left;margin-right:14px;"/>
+
+                                                                <button type="button" class="btn btn-danger remove_button"
+                                                                        value="" ><i class="icon-plus-sign"></i>    Remove                                                 
+                                                                </button>
+
                                                             </div>
+                                                        </div>
 
                                                         <?php
-                                                        }
-                                                    
+                                                    }
                                                     ?>
                                                 </div>
                                             </div>
@@ -244,7 +243,10 @@ if (($_SESSION['permission'] != '1') && ($_SESSION['permission'] != '2')) {
 
         <script type="text/javascript">
             $(document).ready(function () {
-                var maxField = 6; //Input fields increment limitation
+                var maxFields = 6;
+                var count=<?php echo $count;?>;
+                var maxField=+maxFields - +count;
+                //Input fields increment limitation
                 var addButton = $('.add_button');
                 //Add button selector
                 var wrapper = $('.field_wrappers');
@@ -255,6 +257,7 @@ if (($_SESSION['permission'] != '1') && ($_SESSION['permission'] != '2')) {
                 $(addButton).click(function () { //Once add button is clicked
                     if (x < maxField) { //Check maximum number of input fields
                         x++; //Increment field counter
+                      
                         $(wrapper).append(fieldHTML);
                         if (x != 1) {
 
@@ -270,10 +273,10 @@ if (($_SESSION['permission'] != '1') && ($_SESSION['permission'] != '2')) {
                     e.preventDefault();
 
                     $(this).parent('div').remove(); //Remove field html
-                    x--;
+                    x--;  alert(x);
                     if (x == 1) {
 
-                        $("#submit-hide").hide();
+                      //  $("#submit-hide").hide();
                     }
 
 
@@ -283,10 +286,10 @@ if (($_SESSION['permission'] != '1') && ($_SESSION['permission'] != '2')) {
 
                     $(this).parent('div').remove();
                     //Remove field html
-                    x--;
+                    x--;alert(x);
                     if (x == 1) {
 
-                        $("#submit-hide").hide();
+                       // $("#submit-hide").hide();
 
 
                     }// Add f

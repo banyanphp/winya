@@ -77,7 +77,7 @@ $res=mysqli_fetch_array($query);
                   </li>
                    <?php  if( $_SESSION['permission']=='1'){ ?>
                  
-                  <li><a><i class="fa fa-university"></i> Collection <span class="fa fa-chevron-down"></span></a>
+                  <li><a><i class="fa fa-inr"></i> Collection <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                         <li><a href="collection.php">Today`s Collection</a></li>
                         <li><a href="total_collection.php">Total Collection</a></li>
@@ -87,11 +87,7 @@ $res=mysqli_fetch_array($query);
                  
                   <?php }  ?>
                    <?php  if( $_SESSION['permission']=='1'){ ?>
-                  <li><a href="list_users.php"><i class="fa fa-users"></i> Users  </a>
-    
-                   
-                  </li>
-                  <li><a href="list_admin.php"><i class="fa fa-users"></i> Admins  </a>
+                                    <li><a href="list_admin.php"><i class="fa fa-users"></i> Admins  </a>
     
                    
                   </li>

@@ -1,6 +1,10 @@
 <?php
-//error_reporting('0');
+session_start();
 
+//error_reporting('0');
+if (!empty($_SESSION['user'])) {
+    echo'<script>window.location="home.php";</script>';
+}
 ?><!DOCTYPE html>
 <html lang="en">
   

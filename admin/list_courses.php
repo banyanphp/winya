@@ -137,7 +137,7 @@ if ($_SESSION['permission'] != 1) {
                                                 <!--<td><img src="images/country/<?php echo $fetch_country['flag']; ?>" class="img-responsive" style="width: 40px;"></td>-->
 
                                                         <td>
-                                                            <button type="button" class="btn btn-success" onclick="window.location.href='update_course.php?id=<?php echo $course_id; ?>'"><i class="fa fa-eye"></i></button>
+<!--                                                            <button type="button" class="btn btn-success" onclick="window.location.href='update_course.php?id=<?php echo $course_id; ?>'"><i class="fa fa-eye"></i></button>-->
                                                             <button type="button"  class="btn btn-danger"><i class="fa fa-trash"></i></button>
                                                         </td>
 

@@ -142,7 +142,7 @@ if(($_SESSION['permission']!='1')&&($_SESSION['permission']!='2')){
                                                         <td><?php echo $fetch_course['course_name']; ?></td>
                                                         <td><?php echo $fetch_timeline['time'];?></td>
                                                         <td>
-                                                            <button type="button" onclick="window.location.href='view_timeline.php?id=<?php echo $course_id;?>'" class="btn btn-success"><i class="fa fa-eye"></i></button>
+                                                            <button type="button"  class="btn btn-success"><i class="fa fa-eye"></i></button>
                                                             <button type="button"  class="btn btn-danger"><i class="fa fa-trash"></i></button>
                                                         </td>
 
