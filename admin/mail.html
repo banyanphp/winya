@@ -1,0 +1,220 @@
+<?php
+
+	include('include/config.php');
+	$email=$_POST['mails'];
+	$sql=mysqli_query($bd,"SELECT * FROM `tbl_application` WHERE $id = '$mail'" );
+	
+	
+        
+//$activation="1";
+ $activation = $email . time();
+$query="SELECT * FROM `tbl_user` WHERE `user_email`= '$email'";
+$result=mysqli_query($conn,$query);
+$val=mysqli_num_rows($result);
+
+if($val==1){
+	$query1="SELECT * FROM `tbl_user` WHERE `user_email`= '$email'";
+$result1=mysqli_query($conn,$query1);
+$fetchuser=  mysqli_fetch_array($result1);
+$nam=$fetchuser['user_name'];
+$pass=$fetchuser['user_password'];
+       
+    
+//$confirmationlink = "http://www.kwikpatch.com/activation_verification.php?username=$email&activation=$activation";
+  $message='<table style="border:1px solid #e0e0e0;border-style: double;">
+  <tbody>
+    <tr>
+      <td>
+        <table style="overflow:visible;text-align:left;font-variant:normal;font-weight:normal;font-size:14px;background-color:fff;line-height:20px;font-family:Asap,sans-serif;color:#333;padding:0;font-style:normal;width:900px;border-spacing: 0px;">
+          <tbody>
+            <tr>
+              <td colspan="6" style="margin:0px,width:450px;padding:0px;width:50%;background-color: #221c1e;">
+				<img style="padding:10px;width: 400px;" src="images/logo_winya.png" alt="Winya Education">
+              </td>
+              <td colspan="6" style="width:50%;margin:0;text-align:right;background-color: #3fb1c4;">
+				<p colspan="2" style="float: left;width: 139px;color: #feffff;margin: 0px;">MONTH,02,2017</p><br>
+				<p colspan="2" style="float: left;width: 190px;color: #feffff;margin: 0px;">INVOICE.NO &nbsp; : #171004 </p>
+				<h1 style="margin: 0px;float: left;width: 200px;color: #feffff;font-size: 36px;font-weight: 500;">INVOICE</h1>                
+              </td>
+            </tr>
+            <tr>
+              <td colspan="12">
+                <hr style="border-top:0px solid #ccc">
+              </td>
+            </tr>
+			</tbody>
+        </table><br>
+		<table style="overflow:visible;text-align:left;font-variant:normal;font-weight:normal;font-size:14px;background-color:fff;line-height:20px;font-family:Asap,sans-serif;color:#333;padding:0;font-style:normal;width:900px;border-spacing: 0px;">
+          <tbody>
+            <tr>
+              <td colspan="6" style="margin:0px;margin:0px,width:450px;padding:0px;width:50%;">
+				<h2 style="color:#73879C;"> &nbsp; &nbsp; &nbsp;INVOICE TO :</h2>
+				<p style="color:#73879c;margin-bottom:0px;">&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; <b>Mr. Bret</b></p>
+				<p style="color:#73879c;margin-top:0px;">&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; 48A,Thousand lights<br>
+				&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; Anna saalai,<br>
+				&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; Chennai-600001.</p>
+              </td>
+              <td colspan="6" style="width:50%;margin:0;text-align:right;">
+				<p style="border: 1px solid #3fb1c4;margin-bottom:0px;margin-left: 100px;width: 315px;float: left;text-align:left;padding: 0px;height: 35px;"><img src="images/il.jpg" style="height: 35px;float:left;width:29px"><span style="float:right;width: 275px;line-height: 36.1px;">1/27, Buller Street, Te Aro Wellington 6011.</span></p>
+				
+				<p style="border: 1px solid #3fb1c4;margin-left: 100px;margin-bottom:0px;width: 315px;float: left;text-align:left;padding: 0px;height: 35px;"><img src="images/msg.jpg" style="height: 35px;float:left;width:29px"> <span style="float:right;width: 275px;line-height: 36.1px;">contact@winya.co.nz</span></p>
+				
+				<p style="border: 1px solid #3fb1c4;margin-left: 100px;width: 315px;margin-bottom:0px;float: left;text-align:left;padding: 0px;height: 35px;">
+				<img src="images/ph.jpg" style="height: 35px;float:left;width:29px">
+				<span style="float:right; width: 275px;line-height: 36.1px;">+91-98846 21444</span></p>               
+              </td>
+            </tr>
+			<tr>
+              <td colspan="12">
+                
+              </td>
+            </tr><tr>
+              <td colspan="12">
+                
+              </td>
+            </tr>
+            </tbody>
+        </table><br>
+		<hr style="border-top:0px solid #ccc">
+		<table style="overflow:visible;text-align:left;font-variant:normal;font-weight:normal;font-size:14px;background-color:fff;line-height:20px;font-family:Asap,sans-serif;color:#333;padding:0;font-style:normal;width:900px">
+          <tbody>
+            <tr style="height:60px;overflow:hidden;margin-top:20px;padding:0 0 5px">
+              <td colspan="6" >
+                
+				<div>
+				<table border="1"  colspan="6" cellspacing="3" align="Left" cellpadding="4"  rules="all" border="1" height="57" width="100%" style="border-color:#E3EBF3; padding:0;margin-bottom:7px;margin-top:30px;">
+                        <tbody>
+					
+                          <tr align="left">
+                            <th align="center" scope="col"><font size="1"><h2>S.NO</h2></font></th>
+							<th align="center" scope="col" ><font size="1"><h2>College Name</h2></font></th>
+							<th align="center" scope="col" ><font size="1"><h2>Course</h2></font></th>
+							<th align="center" scope="col" ><font size="1"><h2>Total Fee</h2></font></th>
+                            <th align="center" scope="col" style="padding-right: 10px;"><font size="1"><h2>Paid</h2></font></th>
+                          </tr>
+						 
+                          <tr>
+                            <td>
+                              <font align="center" size="1">
+                              <center><span style="font-weight:normal">&nbsp;
+                              <span style="font-size:14px;font-weight:200px;text-align:center;color:#373A3C;">Dryer</span>
+                              </span></center>
+                              </font>
+                            </td>
+                            <td align="left">
+                              <font align="center" size="1">
+                              <center><span style="font-weight:normal">&nbsp;
+                              <span style="font-size:14px;font-weight:200px;text-align:center;color:#373A3C;">2kd</span>
+                              </span></center>
+                              </font>                                                                               
+                            </td>
+							<td align="left">
+                              <font align="center" size="1">
+                              <center><span style="font-weight:normal">&nbsp;
+                              <span style="font-size:14px;font-weight:200px;text-align:center;color:#373A3C;">PD-1003</span>
+                              </span></center>
+                              </font>                                                                               
+                            </td>
+							<td align="left">
+                              <font align="center" size="1">
+                              <center><span style="font-weight:normal">&nbsp;
+                              <span style="font-size:14px;font-weight:200px;text-align:center;color:#373A3C;">ac415v</span>
+                              </span></center>
+                              </font>                                                                               
+                            </td>
+							<td align="right">
+                              <font align="right" size="1">
+                              <span style="font-weight:normal">&nbsp;
+                              <span style="font-size:14px;font-weight:200px;text-align:right;color:#373A3C;">RS.10,00,000.00</span>
+                              </span>
+                              </font>                                                                              
+                            </td>
+                          </tr>
+						  </tbody>
+                      </table>
+				</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+		<table style="overflow:visible;text-align:right;font-variant:normal;font-weight:normal;font-size:14px;background-color:fff;line-height:20px;font-family:Asap,sans-serif;color:#333;padding:0;font-style:normal;width:100%;">
+         
+            <tr style="margin:0;padding:0">
+              <td align="right" colspan="6" style="border-top:1px solid none;border-bottom:1px solid none;">
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					&nbsp;&nbsp;&nbsp;
+			  </td >
+			
+			<td align="left" colspan="2" style="border-top:1px solid #E3EBF3;border-bottom:1px solid #E3EBF3;">
+				<span style="margin-right:0px;"><strong>TOTAL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					&nbsp;&nbsp;&nbsp;</p></span></strong>
+			  </td >
+			  <td align="left" colspan="2" style="border-top:1px solid #E3EBF3;border-bottom:1px solid #E3EBF3;">
+				<span style="margin-right:0px;"><strong> Rs.30,00,000.00</p></span></strong>
+			  </td >
+			  
+		
+			  
+            </tr>
+	
+            
+          </tbody>
+        </table>
+		<table style="overflow:visible;text-align:left;font-variant:normal;font-weight:normal;font-size:14px;background-color:fff;font-family:Asap,sans-serif;color:#333;padding:0;font-style:normal;width:900px">
+          <tbody>
+            <tr>
+              <td colspan="3">
+                <span style="font-size:12px;color:#333;margin:0;padding:0;text-decoration: underline;"><b>Disclaimer</b></span>
+              </td>
+            </tr>
+			<tr>
+			<td>
+				<p>Conditions apply.please check carefully.</p>
+			  </td>
+			</tr>
+            
+          </tbody>
+        </table>
+      </td>
+    </tr>
+  </tbody>
+</table>';
+   $to = $email;
+    $subject = 'Forgot Password|GEM Equipments';
+    $build = "Enquiry";
+$headers = "From:GEM Equipments <" . $build . ">\r\n" ;
+
+$headers .= 'MIME-Version: 1.0' . "\r\n";
+$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+
+if (mail($email, $subject, $message, $headers)) {
+echo '1';
+ 
+ }
+else{
+echo '2';
+ 
+}
+}
+else{
+echo '3';
+ 
+}
+
+?>
