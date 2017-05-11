@@ -27,6 +27,7 @@ while ($fetch_course = mysqli_fetch_array($course_query)) {
     $course_intake = $fetch_course['course intake'];
     $course_intake_explode = explode(",", $course_intake);
     $course_intake_explode_count = count($course_intake_explode);
+    error_reporting('0');
 }
 ?>
 <!DOCTYPE html>
@@ -160,34 +161,16 @@ while ($fetch_course = mysqli_fetch_array($course_query)) {
                                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="country">Course Type <span class="required">*</span></label>
                                                 <div class="col-md-6 col-sm-6 col-xs-12">Part Time<?php
                                                   $course_type_1 = $course_type_explode[0];
-                                                    if ($course_type_1 == "Part Time") {
-                                                     
+                                                                                                      
                                                         ?>
                                                         <input type="checkbox" checked id="part_time" name="chkbox" onclick="ShowHideDiv()" value="yes"> 
-                                                        <?php
-                                                    }
-                                                       if ($course_type_1 == "Full Time") {
-                                                              
-                                                        ?>
-                                                        <input type="checkbox" checked id="part_time" name="chkbox" onclick="ShowHideDiv()" value="yes"> 
-                                                        <?php
-                                                    }
-                                                    ?>
-                                                    <br>
+                                                                                              
 
                                                     Full Time  
-                                                    <?php
-                                                    $course_type_2 = $course_type_explode[1];
-                                                    if ($course_type_2 == "Full Time") {
-                                                        ?><input type="checkbox" checked id="full_time" name="chkbox"  onclick="ShowHideDivs()" value="yes"> 
-                                                        <?php
-                                                    }
- if ($course_type_2 == "Part Time") {
-                                                        ?>
+                                                   <input type="checkbox" checked id="full_time" name="chkbox"  onclick="ShowHideDivs()" value="yes"> 
+                                                     
                                                         <input type="checkbox" checked id="part_time" name="chkbox" onclick="ShowHideDiv()" value="yes"> 
-                                                        <?php
-                                                    }                                                    
-                                                    ?>
+                                                       
 
                                                 </div>
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
