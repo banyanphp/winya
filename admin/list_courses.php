@@ -99,6 +99,26 @@ if ($_SESSION['permission'] != 1) {
     <?php }
 } ?>
 
+                                     <?php
+                                    if (isset($_SESSION["msgs"])) {
+                                        if ($_SESSION["msgs"] == "YY") {
+                                            unset($_SESSION['msgs']);
+                                            ?>
+                                            <div class="alert alert-success fade in m-b-15">
+                                                <strong>Success!</strong>
+                                                Course Updated Successfully
+                                                <span class="close" data-dismiss="alert">&times;</span>
+                                            </div>
+    <?php } else if ($_SESSION["msgs"] == "NN") {
+        unset($_SESSION['msgs']); ?>
+                                            <div class="alert alert-danger fade in m-b-15">
+                                                <strong>Error!</strong>
+                                                Error Occured 
+                                                <span class="close" data-dismiss="alert">&times;</span>
+                                            </div>
+    <?php }
+} ?>
+
                                     <div class="x_content">
 
                                         <table id="datatable-buttons" class="table table-striped table-bordered">
@@ -137,7 +157,7 @@ if ($_SESSION['permission'] != 1) {
                                                 <!--<td><img src="images/country/<?php echo $fetch_country['flag']; ?>" class="img-responsive" style="width: 40px;"></td>-->
 
                                                         <td>
-<!--                                                            <button type="button" class="btn btn-success" onclick="window.location.href='update_course.php?id=<?php echo $course_id; ?>'"><i class="fa fa-eye"></i></button>-->
+                                                            <button type="button" class="btn btn-success" onclick="window.location.href='update_course.php?id=<?php echo $course_id; ?>'"><i class="fa fa-eye"></i></button>
                                                             <button type="button"  class="btn btn-danger"><i class="fa fa-trash"></i></button>
                                                         </td>
 

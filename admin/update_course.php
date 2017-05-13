@@ -19,8 +19,11 @@ while ($fetch_course = mysqli_fetch_array($course_query)) {
     $course_type_explode_count = count($course_type_explode);
     $course_fees = $fetch_course['course_fees'];
     $course_fees_explode = explode(",", $course_fees);
+        $course_fees_explode_count = count($course_fees_explode);
+$courseshortnames= $fetch_course['course_short_name'];
     $course_time = $fetch_course['course_time'];
     $course_time_explode = explode(",", $course_time);
+    $course_time_explode_count = count($course_time_explode);
     $course_criteria = $fetch_course['requirements'];
     $course_criteria_explode = explode(",", $course_criteria);
     $course_criteria_explode_count = count($course_criteria_explode);
@@ -107,13 +110,20 @@ while ($fetch_course = mysqli_fetch_array($course_query)) {
 
                                     <div class="x_content">
                                         <br />
-                                        <form id="add_college" action="store.php?action=add_courses" data-parsley-validate class="form-horizontal form-label-left" enctype="multipart/form-data" method="post">
+                                        <form id="update_courses" action="store.php?action=update_courses" data-parsley-validate class="form-horizontal form-label-left" enctype="multipart/form-data" method="post">
 
                                             <div class="form-group">
                                                 <label class="control-label col-md-3 col-sm-3 col-xs-12"> Course Name <span class="required">*</span>
                                                 </label>
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                                     <input type="text" id="coursename" class="form-control col-md-7 col-xs-12" name="coursenames" value="<?php echo $course_name; ?>" required>
+                                                </div>
+                                            </div>
+                                              <div class="form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12"> Course Name <span class="required">*</span>
+                                                </label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <input type="text" id="courseshortnames" class="form-control col-md-7 col-xs-12" name="courseshortnames" value="<?php echo $courseshortnames; ?>" required>
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -147,7 +157,7 @@ while ($fetch_course = mysqli_fetch_array($course_query)) {
                                                             ?>
 
                                                             <option value="<?php echo $ids_course = $fetch_course['college_id'] ?>"<?php
-                                                            if ($course_id == $ids_course) {
+                                                            if ($college_id == $ids_course) {
                                                                 echo "selected";
                                                             }
                                                             ?>><?php echo $fetch_course['college_name'] ?></option>
@@ -160,17 +170,14 @@ while ($fetch_course = mysqli_fetch_array($course_query)) {
                                             <div class="form-group">
                                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="country">Course Type <span class="required">*</span></label>
                                                 <div class="col-md-6 col-sm-6 col-xs-12">Part Time<?php
-                                                  $course_type_1 = $course_type_explode[0];
-                                                                                                      
-                                                        ?>
-                                                        <input type="checkbox" checked id="part_time" name="chkbox" onclick="ShowHideDiv()" value="yes"> 
-                                                                                              
-
+                                                    $course_type_1 = $course_type_explode[0];
+                                                     $course_type_2 = $course_type_explode[1];
+                                                    ?>
+                                                    <input type="checkbox"  <?php if($course_type_1=="Part Time") { ?> checked <?php } ?> id="part_time" name="parttime[]" onclick="ShowHideDiv()" value="parttime" required> <br>
                                                     Full Time  
-                                                   <input type="checkbox" checked id="full_time" name="chkbox"  onclick="ShowHideDivs()" value="yes"> 
-                                                     
-                                                        <input type="checkbox" checked id="part_time" name="chkbox" onclick="ShowHideDiv()" value="yes"> 
-                                                       
+                                                    <input type="checkbox"  <?php if($course_type_2=="Full Time") { ?> checked <?php }  elseif($course_type_1=="Full Time") { ?> checked <?php } ?> id="full_time" name="parttime[]"  onclick="ShowHideDivs()" value="fulltime" required> 
+
+
 
                                                 </div>
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
@@ -185,29 +192,30 @@ while ($fetch_course = mysqli_fetch_array($course_query)) {
                                                 <div class="form-group" >
                                                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="country">Part Time Course Duration<span class="required">*</span></label>
                                                     <div class="col-md-6 col-sm-6 col-xs-12">
-                                                        <input type="text" class="form-control" id="part_duration" name="part_duration" value="<?php echo $course_time_explode[0] ?>" required>  
+                                                        <input type="text" class="form-control" id="part_duration" name="part_duration" value="<?php if ($course_type_1 == "Part Time") { if($course_time_explode_count==2)  {echo $course_time_explode[0]; } else { echo $course_time_explode[0]; } }?>" required> 
                                                     </div>
                                                 </div>
                                                 <div class="form-group" >
                                                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="country">Part Time Course  fees<span class="required">*</span></label>
                                                     <div class="col-md-6 col-sm-6 col-xs-12">
-                                                        <input type="text" class="form-control" id="part_fees" name="part_fees" value="<?php echo $course_fees_explode[0] ?>" required> 
+                                                        <input type="number" class="form-control" id="part_fees" name="part_fees" value="<?php if ($course_type_1 == "Part Time") { if($course_fees_explode_count==2){echo $course_fees_explode[0];}  else { echo $course_fees_explode[0]; } }?>" required> 
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div id="fulltime" style="<?php if ($course_type_2 == "Full Time") { ?> display: block "><?php } else {
-                                                    ?>    display: none  ">
+                                            <div id="fulltime" style="<?php if ($course_type_2 == "Full Time") { ?> display: block "><?php } else if($course_type_1=='Full Time'){ ?>display: block"><?php }  else { ?> display: none  ">
                                                 <?php } ?>
                                                 <div class="form-group">
                                                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="country">Full  Time Course Duration<span class="required">*</span></label>
                                                     <div class="col-md-6 col-sm-6 col-xs-12">
-                                                        <input type="text" class="form-control" id="full_duration" name="full_duration" value="<?php echo $course_time_explode[1] ?>" required> 
+                                                        <input type="text" class="form-control" id="full_duration" name="full_duration" value="<?php if ($course_type_2 == "Full Time" || $course_type_1 == "Full Time") { 
+                                                        if($course_time_explode_count==1){ echo $course_time_explode[0]; } else {echo $course_time_explode[1]; }}
+                                                            ?>" required> 
                                                     </div>
                                                 </div>
                                                 <div class="form-group" >
                                                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="country">Full Time Course  fees<span class="required">*</span></label>
                                                     <div class="col-md-6 col-sm-6 col-xs-12">
-                                                        <input type="text" class="form-control"  id="full_fees" name="full_fees" value="<?php echo $course_fees_explode[1] ?>" required> 
+                                                        <input type="number" class="form-control"  id="full_fees" name="full_fees" value="<?php if ($course_type_2 == "Full Time" || $course_type_1 == "Full Time" ) { if($course_fees_explode_count==1){echo $course_fees_explode[0]; }else {echo $course_fees_explode[1];}}?>" required> 
                                                     </div>
                                                 </div>
                                             </div>
@@ -250,7 +258,8 @@ while ($fetch_course = mysqli_fetch_array($course_query)) {
                                                                 </div>
                                                             </div>
 
-                                                        <?php }
+                                                        <?php
+                                                        }
                                                     }
                                                     ?>
                                                 </div>
@@ -273,7 +282,7 @@ while ($fetch_course = mysqli_fetch_array($course_query)) {
                                                             }
                                                             ?>
                                                                     ><?php echo $row['full_name'] ?></option>
-<?php } ?>
+                                                                <?php } ?>
                                                     </select>
                                                 </div>
                                             </div>
@@ -308,8 +317,9 @@ while ($fetch_course = mysqli_fetch_array($course_query)) {
 
                                             <div class="form-group">
                                                 <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3 pull-right">
+                                                    <input type="hidden" value="<?php  echo $course_id;?>" name="course_id">
                                                     <button type="reset" class="btn btn-primary">Cancel</button>
-                                                    <button id="add_colleges"  class="btn btn-success">Submit</button>
+                                                    <button   type="submit" class="btn btn-success">Submit</button>
                                                 </div>
                                             </div>
 
@@ -326,7 +336,7 @@ while ($fetch_course = mysqli_fetch_array($course_query)) {
 
 
                 <!-- footer content -->
-<?php include 'footer.php'; ?>
+                <?php include 'footer.php'; ?>
                 <!-- /footer content -->
             </div>
         </div>
@@ -364,7 +374,6 @@ while ($fetch_course = mysqli_fetch_array($course_query)) {
         <script src="vendors/devbridge-autocomplete/dist/jquery.autocomplete.min.js"></script>
         <!-- starrr -->
         <script src="vendors/starrr/dist/starrr.js"></script>
-        <script src="vendors/courses/addcourses.js"></script>
         <!-- Custom Theme Scripts -->
         <script src="build/js/custom.min.js"></script>
         <script src="js/editor.js"></script>
@@ -375,78 +384,84 @@ while ($fetch_course = mysqli_fetch_array($course_query)) {
 
 
         <script>
+  $(document).ready(function () {
 
-
-
-
-                                                        // just for the demos, avoids form submit
-                                                        $('#add_college').validate({
-                                                            rules: {
-                                                                coursenames: {
-                                                                    required: true,
-                                                                },
-                                                                "name[]": {
-                                                                    required: true,
-                                                                    errorClass: "error2",
-                                                                },
-                                                                country: {
-                                                                    required: true,
-                                                                },
-                                                                college_names: {
-                                                                    required: true,
-                                                                },
-                                                                part_duration: {
-                                                                    required: true,
-                                                                },
-                                                                part_fees: {
-                                                                    required: true,
-                                                                },
-                                                                full_duration: {
-                                                                    required: true,
-                                                                },
-                                                                full_fees: {
-                                                                    required: true,
-                                                                },
-                                                                "field_name[]": {
-                                                                    required: true,
-                                                                },
-                                                                chkbox: {
-                                                                    required: true,
-                                                                },
-                                                            },
-                                                            messages: {
-                                                                coursenames: {
-                                                                    required: 'Please enter the Course Name',
-                                                                },
-                                                                "name[]": {
-                                                                    required: 'Select atleast One Month',
-                                                                },
-                                                                country: {
-                                                                    required: 'Select Country.',
-                                                                },
-                                                                college_names: {
-                                                                    required: 'Select College.',
-                                                                },
-                                                                part_duration: {
-                                                                    required: 'Enter Duration.',
-                                                                },
-                                                                part_fees: {
-                                                                    required: 'Enter Fees.',
-                                                                },
-                                                                field_name: {
-                                                                    required: 'Enter Criteria.',
-                                                                },
-                                                                full_fees: {
-                                                                    required: 'Enter Fees.',
-                                                                },
-                                                                full_fees : {
-                                                                    required: 'Enter Fees.',
-                                                                },
-                                                                        chkbox: {
-                                                                            required: 'Please Select Atleast one type of duration',
+$.validator.addMethod("roles", function(value, elem, param) {
+    if($(".roles:checkbox:checked").length > 0){
+        alert();
+       return true;
+   }else {
+       return false;
+   }
+},"You must select at least one!");
+  });
+        // just for the demos, avoids form submit
+                                                                $('#update_courses').validate({
+                                                                    rules: {
+                                                                        coursenames: {
+                                                                            required: true,
                                                                         },
-                                                            },
-                                                        });
+                                                                        "name[]": {
+                                                                            required: true,
+                                                                        },
+                                                                        country: {
+                                                                            required: true,
+                                                                        },
+                                                                        college_names: {
+                                                                            required: true,
+                                                                        },
+                                                                        part_duration: {
+                                                                            required: true,
+                                                                        },
+                                                                        part_fees: {
+                                                                            required: true,
+                                                                        },
+                                                                        full_duration: {
+                                                                            required: true,
+                                                                        },
+                                                                        full_fees: {
+                                                                            required: true,
+                                                                        },
+                                                                        "field_name[]": {
+                                                                            required: true,
+                                                                        },
+                                                                        chkbox: {
+                                                                            required: true,
+                                                                        },
+                                                                    },
+                                                                    messages: {
+                                                                        coursenames: {
+                                                                            required: 'Please enter the Course Name',
+                                                                        },
+                                                                        "name[]": {
+                                                                            required: 'Select atleast One Month',
+                                                                        },
+                                                                        country: {
+                                                                            required: 'Select Country.',
+                                                                        },
+                                                                        college_names: {
+                                                                            required: 'Select College.',
+                                                                        },
+                                                                        part_duration: {
+                                                                            required: 'Enter Duration.',
+                                                                        },
+                                                                        part_fees: {
+                                                                            required: 'Enter Fees.',
+                                                                        },
+                                                                        field_name: {
+                                                                            required: 'Enter Criteria.',
+                                                                        },
+                                                                        full_fees: {
+                                                                            required: 'Enter Fees.',
+                                                                        },
+                                                                        full_fees : {
+                                                                            required: 'Enter Fees.',
+                                                                        },
+                                                                                chkbox: {
+                                                                                    required: 'Please Select Atleast one type of duration',
+                                                                                },
+                                                              },
+                                                                });
 
         </script>
         <script>
@@ -673,10 +688,8 @@ while ($fetch_course = mysqli_fetch_array($course_query)) {
         <script type="text/javascript">
             $(document).ready(function () {
                 var maxField = 1000; //Input fields increment limitation
-                var addButton = $('.add_button');
-                //Add button selector
-                var wrapper = $('.field_wrappers');
-                var wrappers = $('.field_wrapper');
+                var addButton = $('.add_button'); //Add button selector
+                var wrapper = $('.field_wrapper'); //Input field wrapper
                 var fieldHTML = '<div><br><input type="text" class="form-control" name="field_name[]" value=""  required style="float:left;width:50%;margin-right:14px;"/>\n\
         <button type="button" class="btn btn-danger remove_button" value="ADD+" ><i class=""></i> Remove</button></div>'; //New input field html 
                 var x = 1; //Initial field counter is 1
@@ -686,26 +699,54 @@ while ($fetch_course = mysqli_fetch_array($course_query)) {
                         $(wrapper).append(fieldHTML); // Add field html
                     }
                 });
-
-
-                $(wrappers).on('click', '.remove_button', function (e) { //Once remove button is clicked
-                    e.preventDefault();
-
-                    $(this).parent('div').remove(); //Remove field html
-                    x--; //Decrement field counter
-                });
                 $(wrapper).on('click', '.remove_button', function (e) { //Once remove button is clicked
                     e.preventDefault();
-
                     $(this).parent('div').remove(); //Remove field html
                     x--; //Decrement field counter
                 });
-
             });
 
+
+
+function ValidateFileUploads() {
+    var fuData = document.getElementById('files');
+    var FileUploadPath = fuData.value;
+    $('#errorid').html('');
+//To check if user upload any file
+ 
+        var Extension = FileUploadPath.substring(
+                FileUploadPath.lastIndexOf('.') + 1).toLowerCase();
+
+//The file uploaded is an image
+
+        if (Extension == "gif" || Extension == "png" || Extension == "bmp"
+                || Extension == "jpeg" || Extension == "jpg") {
+
+// To Display
+            if (fuData.files && fuData.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#blah').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(fuData.files[0]);
+            }
+
+        }
+
+//The file upload is NOT an image
+        else {
+            alert("Photo only allows file types of GIF, PNG, JPG, JPEG and BMP.");
+
+            setTimeout(function () {
+                $('#errorid').html('');
+            }, 2000);
+            document.getElementById('files').value = '';
+        }
+
+}
         </script>
-
-
 
 
         <!-- /Starrr -->

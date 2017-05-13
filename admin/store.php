@@ -197,12 +197,11 @@ switch ($action) {
             $sl = mysqli_query($bd, "INSERT INTO `college`(`college_id`, `country_id`, `college_name`, `college_details`, 
                 `founded_year`, `type`, `intake`, `college_address`, `status`,`college_photo`,`college_website`)
             VALUES ('','$country','$college_names','$college','$year','$type','$data','$clg_addr','1','$file_name','$url')");
-        }
-else{
-     $sl = mysqli_query($bd, "INSERT INTO `college`(`college_id`, `country_id`, `college_name`, `college_details`, 
+        } else {
+            $sl = mysqli_query($bd, "INSERT INTO `college`(`college_id`, `country_id`, `college_name`, `college_details`, 
                 `founded_year`, `type`, `intake`, `college_address`, `status`,`college_photo`,`college_website`)
             VALUES ('','$country','$college_names','$college','$year','$type','$data','$clg_addr','1','','$url')");
-}
+        }
 
         if ($sl) {
 
@@ -227,7 +226,7 @@ else{
         $type = $_POST['type'];
         $clg_addr = $_POST['clg_addr'];
         $clg_id = $_POST['clg_id'];
-        $name = $_POST['name'];   
+        $name = $_POST['name'];
 
         $count = count($name);
         $intake = "";
@@ -338,6 +337,8 @@ else{
         $full_duration = $_POST['full_duration'];
         $field_name = $_POST['field_name'];
         $field_namecount = count($field_name);
+        $parttime = $_POST['parttime'];
+        $parttime_count = count($parttime);
 
         for ($i = 0; $i < $countname; $i++) {
             $names.=$name[$i];
@@ -347,11 +348,13 @@ else{
             $renames.=$field_name[$i];
             $renames.=",";
         }
+                $renames = substr($renames, 0, -1);
+
         $type = "";
         $typefees = "";
         $typeduration = "";
 
-        if ($_POST['parttime'] == 'yes' && $_POST['fulltime'] == 'yes') {
+        if ($parttime_count == 2) {
             $type.="Part Time";
             $type.=",";
             $type.="Full Time";
@@ -363,43 +366,174 @@ else{
             $typeduration.="$full_duration";
         } else {
 
-            if ($_POST['parttime'] == 'yes') {
+            if ($parttime[0] == 'parttime') {
 
-                if ($_POST['fulltime'] != 'yes') {
+                if ($parttime[0] != 'fulltime') {
                     $type.="Part Time";
                     $typefees.=$part_fees;
                     $typeduration = $part_duration;
                 }
-            } elseif ($_POST['fulltime'] == 'yes') {
-                $type.="Full Time";
-                $typefees.=$full_fees;
-                $typeduration = $full_duration;
+            } elseif ($parttime[0] == 'fulltime') {
+                if ($parttime[0] != 'parttime') {
+                    $type.="Full Time";
+                    $typefees.=$full_fees;
+                    $typeduration = $full_duration;
+                }
             }
         }
-     
+if($_FILES["files"]["name"]!=''){
+  $file_name = date("Y-m-d H:i:s");
+        $file_name = $_FILES["files"]["name"];
+        $temp_name = date("Y-m-d H:i:s");
 
+        $temp_name = $_FILES["files"]["tmp_name"];
+
+        $imgtype = $_FILES["files"]["type"];
+        $ext = GetImageExtension($imgtype);
+
+        $imagename = date("d-m-Y") . "-" . time() . $ext;
+        $target_path = "courses/" . $imagename;
+}
+else{
+    $imagename="test.jpg";
+ $target_path = "courses/" . $imagename;
+}
+        move_uploaded_file($temp_name, $target_path);
+        $q = "INSERT INTO `course_details`(`course_id`, `college_id`, `country_id`, `course_name`, `course_details`, "
+                . "`course_image`, `course_fees`, `course_time`, `requirements`, `course intake`, `status`,`course_type`,`course_short_name`)"
+                . " VALUES ('','$college_names','$country','$coursename','$coursedetail','$target_path','$typefees','$typeduration','$renames','$names','1','$type','$course_short_name')";
+
+        $sl = mysqli_query($bd, $q);
+        if ($sl) {
+
+            echo "<SCRIPT>window.location.href='list_courses.php'</script>";
+            $_SESSION["msg"] = "Y";
+        } else {
+            echo "<SCRIPT>window.location.href='list_courses.php'</script>";
+
+            $_SESSION["msg"] = "N";
+        }
+        break;
+
+    case 'update_courses':
+
+
+        function GetImageExtension($imagetype) {
+
+            if (empty($imagetype))
+                return false;
+
+            switch ($imagetype) {
+
+                case 'image/bmp': return '.bmp';
+
+                case 'image/gif': return '.gif';
+
+                case 'image/jpeg': return '.jpg';
+
+                case 'image/png': return '.png';
+
+                default: return false;
+            }
+        }
+
+
+        $coursename = $_POST['coursenames'];
+
+        $college_names = $_POST['college_names'];
+        $course_short_name = $_POST['courseshortnames'];
+        $country = $_POST['country'];
+        $coursedetail = mysqli_real_escape_string($bd,$_POST['coursedetail']);
+           $course_id = $_POST['course_id'];
+        $name = $_POST['name'];
+        $countname = count($name);
+        $names = '';
+        $renames = '';
+        $part_fees = $_POST['part_fees'];
+        $full_fees = $_POST['full_fees'];
+        $part_duration = $_POST['part_duration'];
+        $full_duration = $_POST['full_duration'];
+        $field_name = $_POST['field_name'];
+        $field_namecount = count($field_name);
+        $parttime = $_POST['parttime'];
+        $parttime_count = count($parttime);
+        for ($i = 0; $i < $countname; $i++) {
+            $names.=$name[$i];
+            $names.=",";
+        }
+        for ($i = 0; $i < $field_namecount; $i++) {
+            $renames.=$field_name[$i];
+            $renames.=",";
+        }
+                        $renames = substr($renames, 0, -1);
+
+        $type = "";
+        $typefees = "";
+        $typeduration = "";
+
+        if ($parttime_count == 2) {
+            $type.="Part Time";
+            $type.=",";
+            $type.="Full Time";
+            $typefees.=$part_fees;
+            $typefees.=",";
+            $typefees.=$full_fees;
+            $typeduration.=$part_duration;
+            $typeduration.=",";
+            $typeduration.="$full_duration";
+        } else {
+
+            if ($parttime[0] == 'parttime') {
+
+                if ($parttime[0] != 'fulltime') {
+                    $type.="Part Time";
+                    $typefees.=$part_fees;
+                    $typeduration = $part_duration;
+                }
+            } elseif ($parttime[0] == 'fulltime') {
+                if ($parttime[0] != 'parttime') {
+                    $type.="Full Time";
+                    $typefees.=$full_fees;
+                    $typeduration = $full_duration;
+                }
+            }
+        }
+            if($_FILES["files"]["name"]!='')  {  
+        $file_name = $_FILES["files"]["name"];
+
+        $file_name = date("Y-m-d H:i:s");
+        $temp_name = date("Y-m-d H:i:s");
+
+        $temp_name = $_FILES["files"]["tmp_name"];
+
+        $imgtype = $_FILES["files"]["type"];
         $ext = GetImageExtension($imgtype);
 
         $imagename = date("d-m-Y") . "-" . time() . $ext;
         $target_path = "courses/" . $imagename;
 
         move_uploaded_file($temp_name, $target_path);
-       $q="INSERT INTO `course_details`(`course_id`, `college_id`, `country_id`, `course_name`, `course_details`, "
-                . "`course_image`, `course_fees`, `course_time`, `requirements`, `course intake`, `status`,`course_type`,`course_short_name`)"
-                . " VALUES ('','$college_names','$country','$coursename','$coursedetail','$target_path','$typefees','$typeduration','$renames','$names','1','$type','$course_short_name')";
-     
-       $sl = mysqli_query($bd, $q);
-        if ($sl) {
+       $q="UPDATE `course_details` SET `college_id`='$college_names',`country_id`='$country',`course_short_name`='$course_short_name',
+                `course_name`='$coursename',`course_details`='$coursedetail',`course_image`='$target_path',`course_type`='$type',
+                `course_fees`='$typefees',`course_time`='$typeduration',`requirements`='$renames',`course intake`='$names' WHERE `course_id`='$course_id'";
+            }
+            else{
+                 $q="UPDATE `course_details` SET `college_id`='$college_names',`country_id`='$country',`course_short_name`='$course_short_name',
+                `course_name`='$coursename',`course_details`='$coursedetail',`course_type`='$type',
+                `course_fees`='$typefees',`course_time`='$typeduration',`requirements`='$renames',`course intake`='$names' WHERE `course_id`='$course_id'";
+            }
+$sl=  mysqli_query($bd, $q);
+
+ if ($sl) {
 
             echo "<SCRIPT>window.location.href='list_courses.php'</script>";
-            $_SESSION["msg"] = "Y";
+            $_SESSION["msgs"] = "YY";
         } else {
-          echo "<SCRIPT>window.location.href='list_courses.php'</script>";
+            echo "<SCRIPT>window.location.href='list_courses.php'</script>";
 
-            $_SESSION["msg"] = "N";
+            $_SESSION["msgs"] = "NN";
         }
         break;
-
     //course end
     //branch start
     case 'add_branch_amount':

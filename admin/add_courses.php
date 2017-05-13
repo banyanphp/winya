@@ -128,9 +128,9 @@ if ($_SESSION['permission'] != 1) {
                                             <div class="form-group">
                                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="country">Course Type <span class="required">*</span></label>
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                                    Part Time    <input type="checkbox" id="part_time" name="parttime" onclick="ShowHideDiv()" value="yes"> 
+                                                    Part Time    <input type="checkbox" id="part_time" name="parttime[]" onclick="ShowHideDiv()" value="parttime" required> 
                                                     <br>
-                                                    Full Time    <input type="checkbox" id="full_time" name="fulltime"  onclick="ShowHideDivs()" value="yes"> 
+                                                    Full Time    <input type="checkbox" id="full_time" name="parttime[]"  onclick="ShowHideDivs()" value="fulltime"> 
 
                                                 </div>
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
@@ -149,7 +149,7 @@ if ($_SESSION['permission'] != 1) {
                                                 <div class="form-group" >
                                                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="country">Part Time Course  fees<span class="required">*</span></label>
                                                     <div class="col-md-6 col-sm-6 col-xs-12">
-                                                        <input type="text" class="form-control" id="part_fees" name="part_fees" required> 
+                                                        <input type="number" class="form-control" id="part_fees" name="part_fees" required> 
                                                     </div>
                                                 </div>
                                             </div>
@@ -163,7 +163,7 @@ if ($_SESSION['permission'] != 1) {
                                                 <div class="form-group" >
                                                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="country">Full Time Course  fees<span class="required">*</span></label>
                                                     <div class="col-md-6 col-sm-6 col-xs-12">
-                                                        <input type="text" class="form-control"  id="full_fees" name="full_fees" required> 
+                                                        <input type="number" class="form-control"  id="full_fees" name="full_fees" required> 
                                                     </div>
                                                 </div>
                                             </div>
@@ -175,7 +175,7 @@ if ($_SESSION['permission'] != 1) {
                                             </div>
 
                                             <div class="form-group">
-                                                <label for="txtProductName" class="col-sm-3 control-label">Add Criteria </label>
+                                                <label for="txtProductName" class="col-sm-3 control-label">Add Criteria <span class="required">*</span></label>
                                                 <div class="col-sm-9">
                                                     <div class="field_wrapper">
                                                         <div>
@@ -294,7 +294,6 @@ if ($_SESSION['permission'] != 1) {
         <script src="vendors/devbridge-autocomplete/dist/jquery.autocomplete.min.js"></script>
         <!-- starrr -->
         <script src="vendors/starrr/dist/starrr.js"></script>
-        <script src="vendors/courses/addcourses.js"></script>
         <!-- Custom Theme Scripts -->
         <script src="build/js/custom.min.js"></script>
         <script src="js/editor.js"></script>
@@ -621,11 +620,48 @@ if ($_SESSION['permission'] != 1) {
                 });
             });
 
-        </script>
+ 
 
 
+function ValidateFileUploads() {
+    var fuData = document.getElementById('files');
+    var FileUploadPath = fuData.value;
+    $('#errorid').html('');
+//To check if user upload any file
+ 
+        var Extension = FileUploadPath.substring(
+                FileUploadPath.lastIndexOf('.') + 1).toLowerCase();
 
+//The file uploaded is an image
 
+        if (Extension == "gif" || Extension == "png" || Extension == "bmp"
+                || Extension == "jpeg" || Extension == "jpg") {
+
+// To Display
+            if (fuData.files && fuData.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#blah').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(fuData.files[0]);
+            }
+
+        }
+
+//The file upload is NOT an image
+        else {
+            alert("Photo only allows file types of GIF, PNG, JPG, JPEG and BMP.");
+
+            setTimeout(function () {
+                $('#errorid').html('');
+            }, 2000);
+            document.getElementById('files').value = '';
+        }
+
+}
+       </script>
         <!-- /Starrr -->
     </body>
 
